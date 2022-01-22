@@ -1,1 +1,1 @@
-web: yarn --cwd nestapi run start
+api: yarn --cwd nestapi run start
