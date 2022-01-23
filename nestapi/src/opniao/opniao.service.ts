@@ -3,10 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CriaOpniaoDTO } from './create-opniao.dto';
 import { Opniao } from './opniao.interface'; 
+import { OpniaoSche } from './schemas/opniao.schema';
 
 @Injectable()
 export class OpniaoService {
-    constructor(@InjectModel('Opniao') 
+    constructor(@InjectModel(OpniaoSche.name) 
     private readonly opnioesModelo:Model<Opniao>){
 
     }
