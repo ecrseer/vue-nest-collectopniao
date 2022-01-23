@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { CriaOpniaoDTO } from './create-opniao.dto';
-import { OpniaoService } from './opniao.service';
+import { OpniaoService } from './opniao.service'; 
 
 @Controller('opniao')
 export class OpniaoController {
@@ -20,6 +20,11 @@ export class OpniaoController {
      async getAllOpniao(@Res() res){
          const opnioes = await this.opniaoService.getAllOpnioes()
          return res.status(HttpStatus.OK).json(opnioes)
+     }
+     @Get('dilicia')
+     async testagem(){
+         //return OpniaoSchema.first_name
+
      }
 
 }
