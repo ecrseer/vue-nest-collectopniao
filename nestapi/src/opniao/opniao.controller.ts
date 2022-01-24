@@ -1,6 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
-import { CriaOpniaoDTO } from './create-opniao.dto';
+import { Body, Controller, Get, HttpStatus, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { JoiValidationPipe } from 'src/shared/validation.pipe';
+import { CriaOpniaoDTO, CriaOpniaoSchema } from './create-opniao.dto';
+import { OpniaoValidationPipe } from './opniao.pipe';
 import { OpniaoService } from './opniao.service'; 
+import { OpniaoSche } from './schemas/opniao.schema';
 
 @Controller('opniao')
 export class OpniaoController {
@@ -8,10 +11,12 @@ export class OpniaoController {
     constructor(private opniaoService:OpniaoService){}
 
     @Post("/criar")
+    @UsePipes(new JoiValidationPipe(CriaOpniaoSchema))
+    //@UsePipes(new ValidationPipe())
     async addOpniao(@Res() res, 
     @Body() criaOpniaoDTO:CriaOpniaoDTO){
-        const opniao = this.opniaoService.addOpniao(criaOpniaoDTO)
-        return res.status(HttpStatus.OK).json({
+        const opniao = await this.opniaoService.addOpniao(criaOpniaoDTO)
+        return await res.status(HttpStatus.OK).json({
             message:'adicionei ok',
             opniao
         })
