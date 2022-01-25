@@ -6,9 +6,8 @@ export class JoiValidationPipe implements PipeTransform<undefined>{
 
     transform(value: any, metadata: ArgumentMetadata) {
         const {error} = this.schema.validate(value)
-        if(error){
-            throw new BadRequestException("Dados incorretos.");
-            
+        if(error){ 
+            throw new BadRequestException(`Dados incorretos. pois ${error.message}`);            
         }
         return value
 

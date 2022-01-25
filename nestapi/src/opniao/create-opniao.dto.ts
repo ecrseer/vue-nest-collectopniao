@@ -13,11 +13,11 @@ export interface CriaOpniaoDTO  {
 
 }
 export const CriaOpniaoSchema = Joi.object({
-    first_name:Joi.string().required(),
-    last_name: Joi.string(),
-    email: Joi.string(),
-    phone: Joi.string(),
-    address: Joi.string(),
-    description: Joi.string(),
+    first_name:Joi.string().trim().required(),
+    last_name: Joi.string().trim(),
+    email: Joi.string().trim(),
+    phone: Joi.string().trim(),
+    address: Joi.string().trim(),
+    description: Joi.string().trim(),
     created_at: Joi.date(),
 }).options({ abortEarly: false, allowUnknown: true });
