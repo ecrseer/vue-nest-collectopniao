@@ -14,7 +14,7 @@ export class OpniaoService {
 async getAllOpnioes():Promise<Opniao[]>{
     return await this.opnioesModelo.find().exec();
 }
-async addOpniao(criaOpniao:CriaOpniaoDTO):Promise<Opniao>{
+async adicionaOpniao(criaOpniao:CriaOpniaoDTO):Promise<Opniao>{
     const opniao = await new this.opnioesModelo(criaOpniao);    
     return opniao.save();
 }

@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CriaOpniaoDTO } from './create-opniao.dto';
@@ -5,6 +6,7 @@ import { OpniaoController } from './opniao.controller';
 import { OpniaoService } from './opniao.mongo.service';
 import { OpniaoSche, OpniaoSchema2 } from './schemas/opniao.schema';
 
+const idMockado = '61f01da7fdd02332259996d2'
 const resolvedValue = [
   {
     "_id": "61ef5bda02fe75fc6ba590eb",
@@ -36,10 +38,10 @@ const providing = {
   provide: OpniaoService,
   useValue: {
     findAll: jest.fn().mockResolvedValue(resolvedValue),
-    create: jest
+    adicionaOpniao: jest
       .fn()
       .mockImplementation((criaOpniaoDTO: CriaOpniaoDTO) =>
-        Promise.resolve({ _id: '31', ...criaOpniaoDTO }),
+        Promise.resolve({ _id: idMockado, ...criaOpniaoDTO }),
       ),
   },
 }
@@ -53,9 +55,9 @@ describe('OpniaoController', () => {
       providers: [
         providing],
     }).compile();
-    
-    service = module.get<OpniaoService>(OpniaoService);
-    controller = module.get<OpniaoController>(OpniaoController);
+
+    service = module.get(OpniaoService);
+    controller = module.get(OpniaoController);
   });
 
   it('deve estar definido', async () => {
@@ -63,7 +65,43 @@ describe('OpniaoController', () => {
     expect(service).toBeDefined()
   });
 
-  it('deve criar',async()=>{
-    
+  it('deve criar', async () => {
+    const opniaoMock: CriaOpniaoDTO = {
+      first_name: "carlos",
+      last_name: '',
+      email: '',
+      phone: '',
+      address: '',
+      description: '',
+      satisfacao: 0,
+      created_at: undefined
+    }
+    const resMock = {
+      json(body?: any)  {  return body},
+      status(code: number)  {
+        this.statusCode = code
+        return this},
+    }
+
+
+
+    let resultadoCriar = await controller.addOpniao(resMock, opniaoMock)
+    let nsei = expect(resultadoCriar).resolves
+      .toEqual(
+        {
+          message: "adicionei ok",
+          opniao: {
+            _id: idMockado,
+            first_name: "carlos",
+            last_name: "",
+            email: "",
+            phone: "",
+            address: "",
+            description: "",
+            satisfacao: 0,
+            created_at: undefined,
+          }     
+      )
+
   })
 });

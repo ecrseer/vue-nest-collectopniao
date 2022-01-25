@@ -17,7 +17,7 @@ export class OpniaoController {
     //@UsePipes(new ValidationPipe())
     async addOpniao(@Res() res, 
     @Body() criaOpniaoDTO:CriaOpniaoDTO){
-        const opniao = await this.opniaoService.addOpniao(criaOpniaoDTO)
+        const opniao = await this.opniaoService.adicionaOpniao(criaOpniaoDTO)
         return await res.status(HttpStatus.OK).json({
             message:'adicionei ok',
             opniao
