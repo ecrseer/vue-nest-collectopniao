@@ -1,9 +1,10 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from "@nestjs/common";
-import {Response} from 'express'
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import {Response,Request} from 'express'
 //response sobrescreve o tipo response
 
-
+@Catch()
 export class HttpNaoEncontrado implements ExceptionFilter {
+    
     catch(ex: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const resp = ctx.getResponse<Response>();

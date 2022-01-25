@@ -76,32 +76,25 @@ describe('OpniaoController', () => {
       satisfacao: 0,
       created_at: undefined
     }
-    const resMock = {
+    const responseMock = {
+      message: "adicionei ok",
+      opniao: {
+        _id: idMockado,
+        ...opniaoMock
+      }
+    }
+
+    const responseFunctionsMock = {
       json(body?: any)  {  return body},
       status(code: number)  {
         this.statusCode = code
         return this},
     }
+    
 
+    let promiseCriar =  controller.addOpniao(responseFunctionsMock, opniaoMock);
 
-
-    let resultadoCriar = await controller.addOpniao(resMock, opniaoMock)
-    let nsei = expect(resultadoCriar).resolves
-      .toEqual(
-        {
-          message: "adicionei ok",
-          opniao: {
-            _id: idMockado,
-            first_name: "carlos",
-            last_name: "",
-            email: "",
-            phone: "",
-            address: "",
-            description: "",
-            satisfacao: 0,
-            created_at: undefined,
-          }     
-      )
+    expect(promiseCriar).resolves.toEqual(responseMock)
 
   })
 });
