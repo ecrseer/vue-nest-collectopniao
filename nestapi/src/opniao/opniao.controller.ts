@@ -1,10 +1,12 @@
 import { Body, Controller, Get, HttpStatus, Post, Res, UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
 import { HttpNaoEncontrado } from 'src/shared/notfound.filter';
+import { JoiValidationPipe } from 'src/shared/validation.pipe';
 
-import { JoiValidationPipe } from 'src/shared/validation.pipe'; 
+
+
 import { CriaOpniaoDTO, CriaOpniaoSchema } from './create-opniao.dto'; 
 import { OpniaoService } from './opniao.mongo.service'; 
-import { OpniaoSche } from './schemas/opniao.schema';
+import { OpniaoSchema } from './schemas/opniao.schema';
 
 //@UseFilters(HttpNaoEncontrado)
 @Controller('opniao')

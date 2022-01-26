@@ -6,7 +6,7 @@ import { Opniao } from '../opniao.interface';
 export type OpniaoDocument = Opniao & Document
 
 @Schema()
-export class OpniaoSche {
+export class OpniaoSchema {
     @Prop()
     first_name: string;
     @Prop()
@@ -25,4 +25,4 @@ export class OpniaoSche {
     @Prop({ type: Date, default: Date.now })
     created_at: Date;
 }
-export const OpniaoSchema2 = SchemaFactory.createForClass(OpniaoSche);
+export const OpniaoSchemaSingleton = SchemaFactory.createForClass(OpniaoSchema);
