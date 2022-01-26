@@ -1,10 +1,10 @@
 import { HttpStatus } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Test, TestingModule } from '@nestjs/testing'; 
+import { Test, TestingModule } from '@nestjs/testing';
 
 
 
-import { CriaOpniaoDTO } from './create-opniao.dto';
+import { CriaOpniaoDTO, CriaOpniaoSchema } from './create-opniao.dto';
 import { OpniaoController } from './opniao.controller';
 import { OpniaoService } from './opniao.mongo.service';
 import { OpniaoSchema, OpniaoSchemaSingleton } from './schemas/opniao.schema';
@@ -36,34 +36,29 @@ const resolvedValueMock = [
     "created_at": "2022-01-25T15:56:23.845Z",
     "__v": 0
   }
-  
-  ]
-  describe('OpniaoController', () => {
-    let controller: OpniaoController;
-    let service: OpniaoService;
-    
-    beforeEach(async () => {
-      const JoiPipeMock = {} as  JoiValidationPipe
-      const providerMock = {
-        provide: OpniaoService,
-        useValue: {
-          findAll: jest.fn().mockResolvedValue(resolvedValueMock),
-          adicionaOpniao: jest
-            .fn()
-            .mockImplementation((criaOpniaoDTO: CriaOpniaoDTO) =>
-              Promise.resolve({ _id: idMockado, ...criaOpniaoDTO }),
-            )
-        },
-      }
 
-    JoiPipeMock.transform = jest.fn().mockReturnValue('0')
+]
+describe('OpniaoController', () => {
+  let controller: OpniaoController;
+  let service: OpniaoService;
 
+  beforeEach(async () => { 
+    const providerMock = {
+      provide: OpniaoService,
+      useValue: {
+        findAll: jest.fn().mockResolvedValue(resolvedValueMock),
+        adicionaOpniao: jest.fn()
+          .mockImplementation((criaOpniaoDTO: CriaOpniaoDTO) =>
+            Promise.resolve({ _id: idMockado, ...criaOpniaoDTO }),
+          )
+      },
+    } 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OpniaoController],
       providers: [providerMock],
     })
-    .overridePipe(JoiValidationPipe).useValue(JoiPipeMock)
-    .compile();
+      .overridePipe(JoiValidationPipe).useValue(new JoiValidationPipe(CriaOpniaoSchema))
+      .compile();
 
     service = module.get(OpniaoService);
     controller = module.get(OpniaoController);
@@ -74,16 +69,24 @@ const resolvedValueMock = [
     expect(service).toBeDefined()
   });
 
-  it('deve criar', async () => {
+  it('deve cadastrar opniao corretamente', async () => {
     const opniaoMock: CriaOpniaoDTO = {
-      first_name: "carlos",
-      last_name: '',
+      first_name: '',
+      last_name: 'carlos',
       email: '',
       phone: '',
       address: '',
       description: '',
-      satisfacao: 0,
+      satisfacao: 4,
       created_at: undefined
+    }
+    
+    const responseFunctionsMock = {
+      json(body?: any) { return body },
+      status(code: number) {
+        this.statusCode = code
+        return this
+      },
     }
     const responseMock = {
       message: "adicionei ok",
@@ -93,15 +96,8 @@ const resolvedValueMock = [
       }
     }
 
-    const responseFunctionsMock = {
-      json(body?: any)  {  return body},
-      status(code: number)  {
-        this.statusCode = code
-        return this},
-    }
-    
 
-    let promiseCriar =  controller.addOpniao(responseFunctionsMock, opniaoMock);
+    let promiseCriar = controller.addOpniao(responseFunctionsMock, opniaoMock);
     expect(promiseCriar).resolves.toEqual(responseMock)
 
   })

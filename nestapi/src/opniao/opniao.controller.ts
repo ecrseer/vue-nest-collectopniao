@@ -29,11 +29,6 @@ export class OpniaoController {
      async getAllOpniao(@Res() res){
          const opnioes = await this.opniaoService.getAllOpnioes()
          return res.status(HttpStatus.OK).json(opnioes)
-     }
-     @Get('dilicia')
-     async testagem(){
-         //return OpniaoSchema.first_name
-
-     }
+     } 
 
 }
