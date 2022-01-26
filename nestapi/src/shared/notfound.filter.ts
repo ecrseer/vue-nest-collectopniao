@@ -1,8 +1,8 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, NotFoundException } from "@nestjs/common";
 import {Response,Request} from 'express'
 //response sobrescreve o tipo response
 
-@Catch()
+@Catch(NotFoundException)
 export class HttpNaoEncontrado implements ExceptionFilter {
     
     catch(ex: HttpException, host: ArgumentsHost) {
@@ -14,6 +14,8 @@ export class HttpNaoEncontrado implements ExceptionFilter {
         resp
             .status(status)
             .json({
+                mensagem:'Caminho(URL) nao encontrado',
+                msg:ex.message,
                 statusCode: status,
                 timestamp: new Date().toISOString(),
                 path: request.url,
