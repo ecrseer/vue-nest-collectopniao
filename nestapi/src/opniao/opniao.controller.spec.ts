@@ -1,7 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Test, TestingModule } from '@nestjs/testing';
-import { JoiValidationPipe } from 'src/shared/validation.pipe';
+import { Test, TestingModule } from '@nestjs/testing'; 
 
 
 
@@ -9,6 +8,7 @@ import { CriaOpniaoDTO } from './create-opniao.dto';
 import { OpniaoController } from './opniao.controller';
 import { OpniaoService } from './opniao.mongo.service';
 import { OpniaoSchema, OpniaoSchemaSingleton } from './schemas/opniao.schema';
+import { JoiValidationPipe } from './validation.pipe';
 
 const idMockado = '61f01da7fdd02332259996d2'
 const resolvedValueMock = [
